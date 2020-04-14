@@ -1,0 +1,26 @@
+variables:
+  PIPELINE_WIDE: "available for all jobs"
+
+stages:
+  - stage1
+  - stage2
+
+install dependencies:
+  stage: stage1
+  commands:
+    - echo $PIPELINE_WIDE
+    - echo "test1"
+
+unit tests 1:
+  stage: stage2
+  variables:
+    PIPELINE_WIDE: "override this var"
+  commands:
+    - echo $PIPELINE_WIDE
+
+unit tests 2:
+  stage: stage2
+  variables:
+    BUILD_FOO: "foo; only for build"
+  commands:
+    - echo $BUILD_FOO
