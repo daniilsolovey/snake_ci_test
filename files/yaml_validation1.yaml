@@ -1,0 +1,4 @@
+# verify stage is require
+install dependencies:
+  commands:
+    - echo "test1"

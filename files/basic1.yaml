@@ -1,0 +1,18 @@
+stages:
+  - stage1
+  - stage2
+
+install dependencies:
+  stage: stage1
+  commands:
+    - echo test install
+
+unit tests 1:
+  stage: stage2
+  commands:
+    - exit 1
+
+unit tests 2:
+  stage: stage2
+  commands:
+    - echo test 2

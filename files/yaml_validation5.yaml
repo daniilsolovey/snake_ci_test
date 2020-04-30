@@ -1,0 +1,40 @@
+# verify only
+variables:
+  PIPELINE_WIDE: "available for all jobs"
+
+stages:
+  - stage1
+  - stage2
+
+job 1:
+  stage: stage1
+  only:
+    branches:
+      - master
+      - branch1
+  commands:
+    - echo "job1"
+
+job 2:
+  stage: stage1
+  only:
+    tags:
+      - tag1
+      - tag2
+  commands:
+    - echo "job2"
+
+job 3:
+  stage: stage2
+  only:
+    branches:
+      - branch1
+    tags:
+      - tag1
+  commands:
+    - echo "job 3"
+
+job 4:
+  stage: stage2
+  commands:
+    - echo "job 4"

@@ -1,0 +1,22 @@
+# verify image is not require (default is alpine)
+# verify image in job
+stages:
+  - stage1
+  - stage2
+
+install dependencies:
+  stage: stage1
+  commands:
+    - echo "stage 1 job 1"
+
+unit tests 1:
+  stage: stage2
+  image: golang
+  commands:
+    - echo "stage 2 job 1"
+
+unit tests 2:
+  stage: stage2
+  image: "maven:3"
+  commands:
+    - echo "stage 2 job 2"

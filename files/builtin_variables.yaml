@@ -1,0 +1,27 @@
+# verify image is not require (default is alpine)
+stages:
+  - stage1
+
+install dependencies:
+  stage: stage1
+  commands:
+    - echo $CI_PIPELINE_ID
+    - echo $CI_JOB_ID
+    - echo $CI_JOB_STAGE
+    - echo $CI_JOB_NAME
+    - echo $CI_BRANCH
+    - echo $CI_TAG
+    - echo $CI_COMMIT_HASH
+    - echo $CI_COMMIT_SHORT_HASH
+    - echo $CI_PIPELINE_DIR
+    - echo $CI_PULL_REQUEST_ID
+    - echo $CI_PROJECT_KEY
+    - echo $CI_PROJECT_NAME
+    - echo $CI_PROJECT_ID
+    - echo $CI_REPO_SLUG
+    - echo $CI_REPO_NAME
+    - echo $CI_REPO_ID
+    - echo $CI_REPO_CLONE_URL_SSH
+    - echo $CI_RUNNER_ID
+    - echo $CI_RUNNER_NAME
+    - echo $CI_RUNNER_VERSION
