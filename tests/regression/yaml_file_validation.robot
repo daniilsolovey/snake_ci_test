@@ -16,7 +16,6 @@ Test Timeout    2 minutes
 
 *** Test Cases ***
 Stage Is Require In Yaml File
-    [Tags]    zzz
     ## verify stage is require
     Set Test Variable    ${COMMIT_MSG}    validate yaml file 1
     # verify stage is require
@@ -30,7 +29,6 @@ Stage Is Require In Yaml File
     Go To Job List Page And Verify No Job From A Pipeline    ${pipeline_num}
 
 Image Is Optional In Yaml File
-    [Tags]    zzz
     Set Test Variable    ${COMMIT_MSG}    validate yaml file 4
     # verify stage is require
     ${url}    Copy File To Repo And Push    ${EXECDIR}/files/yaml_validation4.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
@@ -49,7 +47,6 @@ Image Is Optional In Yaml File
     Go To Job List Page And Verify A Job    3    Completed    ${COMMIT_MSG}    STAGE2    unit tests 2    ${pipeline_num}
 
 Verify Only Property In Yaml File
-    [Tags]    zzz
     ### push on branch1
     Set Test Variable    ${COMMIT_MSG}    validate yaml file 5 from branch1
     Set Test Variable    ${BRANCH_NAME}    branch1
@@ -71,8 +68,9 @@ Verify Only Property In Yaml File
     Go To Job List Page And Verify A Job    2    Completed    ${COMMIT_MSG}    STAGE2    job 3    ${pipeline_num}
     Go To Job List Page And Verify A Job    3    Completed    ${COMMIT_MSG}    STAGE2    job 4    ${pipeline_num}
     ### push on tag2
-    ${commit_msg}    Get Last Commit Message On Branch    master
+    Set Test Variable    ${COMMIT_MSG}    Test only with tag
     Set Test Variable    ${TAG_NAME}    tag2
+    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/yaml_validation5.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
     # delete the tag on master
     Delete Local And Remote Tag On A Branch And Ignore Failure    master    ${TAG_NAME}
     # add tag to latest commit on master
@@ -90,7 +88,6 @@ Verify Only Property In Yaml File
     Go To Job List Page And Verify A Job    2    Completed    ${commit_msg}    STAGE2    job 4    ${pipeline_num}
 
 Verify Builtin Environment Variables
-    [Tags]    zzz
     Set Test Variable    ${COMMIT_MSG}    verify builtin variables
     # push a new yaml file
     ${url}    Copy File To Repo And Push    ${EXECDIR}/files/builtin_variables.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
@@ -124,32 +121,31 @@ Verify Builtin Environment Variables
     # verify jobs in the job list page
     Go To Job List Page And Verify A Job    1    Completed    ${COMMIT_MSG}    STAGE1    install dependencies    ${pipeline_num}
 
-Verify Variable Levels
-    [Tags]    zzz
-    ### verify job var > pipeline > dialog > repo > project; pipeline > dialog > repo > project
-    ${proj_value}    Set Variable    This is project var
-    ${repo_value}    Set Variable    This is repo var
-    Set Test Variable    ${COMMIT_MSG}    Verify job and pipeline var
-    # add project variable
-    Add A Project Variable    TEST    ${proj_value}
-    # add repo variable
-    Add A Repo Variable    TEST    ${repo_value}
-    # push yaml file
-    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/var_level1.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
-    # verify pipeline detail page
-    ${pipeline_num}    Go To Pipeline Detail Page    ${url}
-    Verify A Pipeline Detail Page    Completed    ${COMMIT_MSG}    Jobs (2 total):2 completed    ${pipeline_num}
-    # Verify jobs in pipeline detail page
-    Verify A Job In Pipeline Detail Page    1    Completed    STAGE1    job 1    echo $TEST\nThis is job var
-    Verify A Job In Pipeline Detail Page    2    Completed    STAGE1    job 2    echo $TEST\nThis is pipeline var
-    ### verify repo > project
-    Set Test Variable    ${COMMIT_MSG}    Verify repo var > project var
-    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/var_level2.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
-    # verify pipeline detail page
-    ${pipeline_num}    Go To Pipeline Detail Page    ${url}
-    Verify A Pipeline Detail Page    Completed    ${COMMIT_MSG}    Jobs (1 total):1 completed    ${pipeline_num}
-    # Verify jobs in pipeline detail page
-    Verify A Job In Pipeline Detail Page    1    Completed    STAGE1    job 1    echo $TEST\nThis is job var
-    ### verify dialog > repo > prj
+#Verify Variable Levels
+#    ### verify job var > pipeline > dialog > repo > project; pipeline > dialog > repo > project
+#    ${proj_value}    Set Variable    This is project var
+#    ${repo_value}    Set Variable    This is repo var
+#    Set Test Variable    ${COMMIT_MSG}    Verify job and pipeline var
+#    # add project variable
+#    Add A Project Variable    TEST    ${proj_value}
+#    # add repo variable
+#    Add A Repo Variable    TEST    ${repo_value}
+#    # push yaml file
+#    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/var_level1.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
+#    # verify pipeline detail page
+#    ${pipeline_num}    Go To Pipeline Detail Page    ${url}
+#    Verify A Pipeline Detail Page    Completed    ${COMMIT_MSG}    Jobs (2 total):2 completed    ${pipeline_num}
+#    # Verify jobs in pipeline detail page
+#    Verify A Job In Pipeline Detail Page    1    Completed    STAGE1    job 1    echo $TEST\nThis is job var
+#    Verify A Job In Pipeline Detail Page    2    Completed    STAGE1    job 2    echo $TEST\nThis is pipeline var
+#    ### verify repo > project
+#    Set Test Variable    ${COMMIT_MSG}    Verify repo var > project var
+#    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/var_level2.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
+#    # verify pipeline detail page
+#    ${pipeline_num}    Go To Pipeline Detail Page    ${url}
+#    Verify A Pipeline Detail Page    Completed    ${COMMIT_MSG}    Jobs (1 total):1 completed    ${pipeline_num}
+#    # Verify jobs in pipeline detail page
+#    Verify A Job In Pipeline Detail Page    1    Completed    STAGE1    job 1    echo $TEST\nThis is job var
+#    ### verify dialog > repo > prj
 
 *** Keywords ***

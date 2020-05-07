@@ -16,7 +16,6 @@ Test Timeout    2 minutes
 
 *** Test Cases ***
 Pipeline is triggered after a push from master
-    [Tags]    zzz
     Set Test Variable    ${COMMIT_MSG}    basic commit
     # push a new yaml file
     ${url}    Copy File To Repo And Push    ${EXECDIR}/files/basic.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
@@ -35,7 +34,6 @@ Pipeline is triggered after a push from master
     Go To Job List Page And Verify A Job    3    Completed    ${COMMIT_MSG}    STAGE2    unit tests 2    ${pipeline_num}
 
 Pipeline is trigger after a push from a branch
-    [Tags]    zzz
     Set Test Variable    ${COMMIT_MSG}    commit from a branch
     Set Test Variable    ${BRANCH_NAME}    mybranch1
     # dete mybranch1
@@ -87,7 +85,6 @@ Pipeline is trigger after a push from a branch
     Verify A Job In Pipeline Detail Page    3    Completed    STAGE2    unit tests 2    echo $BUILD_FOO\nfoo; only for build
 
 Invoke New Pipeline On Web UI From A Branch
-    [Tags]    zzz
     Set Test Variable    ${COMMIT_MSG}    Invoke pipeline from web test
     Set Test Variable    ${TAG_NAME}    webInvoke
     Set Test Variable    ${BRANCH}    master
@@ -111,7 +108,6 @@ Invoke New Pipeline On Web UI From A Branch
     Verify A Pipeline Detail Page    Completed    ${commit_msg}    Jobs (3 total):3 completed    ${next_pipeline}
 
 Pipeline has last commit name
-    [Tags]    wip
     Set Test Variable    ${COMMIT_MSG1}    commit message 1
     Set Test Variable    ${COMMIT_MSG2}    commit message 2
     # push a new yaml file
@@ -131,7 +127,6 @@ Pipeline has last commit name
     Go To Job List Page And Verify A Job    3    Completed    ${COMMIT_MSG2}    STAGE2    unit tests 2    ${pipeline_num}
 
 Pipeline will fail when a job fails
-    [Tags]    zzz
     Set Test Variable    ${COMMIT_MSG}    test failed pipeline
     # push a new yaml file
     ${url}    Copy File To Repo And Push    ${EXECDIR}/files/basic1.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
