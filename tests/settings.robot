@@ -3,6 +3,7 @@ Library    Process
 Library    OperatingSystem
 Library    String
 Library    SeleniumLibrary
+Library    Collections
 
 *** Variables ***
 # remote repo

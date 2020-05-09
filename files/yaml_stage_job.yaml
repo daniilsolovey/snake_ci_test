@@ -1,0 +1,7 @@
+# verify stage is require at job level
+stages:
+  - stage1
+
+install dependencies:
+  commands:
+    - echo "test1"

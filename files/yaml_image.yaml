@@ -1,5 +1,5 @@
-# verify image is not require (default is alpine)
-# verify image in job
+# Verify alpine is used by default
+# Verify "image" field can be defined in job level
 stages:
   - stage1
   - stage2

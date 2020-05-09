@@ -1,0 +1,44 @@
+# verify image with variables
+variables:
+  pipeline_var: "alpine"
+
+stages:
+  - stage1
+  - stage2
+
+job 1:
+  stage: stage1
+  image: $job_var
+  variables:
+    job_var: "maven:3"
+  commands:
+    - echo "job 1"
+
+job 2:
+  stage: stage1
+  image: $pipeline_var
+  commands:
+    - echo "job 2"
+
+job 3:
+  stage: stage1
+  image: $dialog_var
+  commands:
+    - echo "job 3"
+
+job 4:
+  stage: stage1
+  image: $repo_var
+  commands:
+    - echo "job 4"
+
+job 5:
+  stage: stage1
+  image: $project_var
+  commands:
+    - echo "job 5"
+
+job 6:
+  stage: stage2
+  commands:
+    - echo "job 6"

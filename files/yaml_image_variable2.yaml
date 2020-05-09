@@ -1,0 +1,24 @@
+# verify image with variables
+variables:
+  pipeline_var: "alpine"
+
+stages:
+  - stage1
+  - stage2
+
+job 1:
+  stage: stage1
+  image: $repo_var
+  commands:
+    - echo "job 1"
+
+job 2:
+  stage: stage1
+  image: $project_var
+  commands:
+    - echo "job 2"
+
+job 3:
+  stage: stage2
+  commands:
+    - echo "job 3"

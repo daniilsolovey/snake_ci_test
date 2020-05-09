@@ -94,7 +94,7 @@ Go To Job List Page And Verify No Job From A Pipeline
     # verify pipeline_num. Use Page Should Not Contain Element in case the pipeline name is long and overlap the number
     Page Should Not Contain Element    xpath=//span[text()="#${pipeline_num}"]
 
-Verify A Job In Pipeline Detail Page Without Log
+Verify A Job In Pipeline Detail Page With Log
     [Documentation]    Verify a job in pipelien detail page
     [Arguments]    ${job_no}    ${job_status}   ${stage}   ${job_name}
     # click the job_no
@@ -121,17 +121,32 @@ Verify A Job In Pipeline Detail Page Without Log
     ${id2}    Get Text    xpath=//td[text()="ID"]/following-sibling::td
     Should Be Equal    ${id1}    ${id2}
 
+Verify A Job In Pipeline Detail Page Without Log
+    [Documentation]    Verify a job in pipelien detail page
+    [Arguments]    ${job_no}    ${job_status}   ${stage}   ${job_name}
+    # verify status
+    ${job_status1}    Get Text    css=table.io-reconquest tbody tr:nth-child(${job_no}) span.io-reconquest-status-badge__text
+    Should Be Equal    ${job_status1}    ${job_status}
+    # verify stage
+    ${stage1}    Get Text    css=table.io-reconquest tbody tr:nth-child(${job_no}) span.io-reconquest-snake-jobs__item-stage
+    Should Be Equal    ${stage1}    ${stage}
+    # verify job name
+    ${job_name1}    Get Text    css=table.io-reconquest tbody tr:nth-child(${job_no}) td:nth-child(2) span:nth-child(2)
+    Should Be Equal    ${job_name1}    ${job_name}
+
 Verify A Job In Pipeline Detail Page
     [Documentation]    Verify a job in pipelien detail page
     [Arguments]    ${job_no}    ${job_status}   ${stage}   ${job_name}   @{text}
-    Verify A Job In Pipeline Detail Page Without Log    ${job_no}    ${job_status}   ${stage}   ${job_name}
+    ${length}    Get Length    ${text}
+    Run Keyword If    ${length} == 0    Verify A Job In Pipeline Detail Page Without Log    ${job_no}    ${job_status}   ${stage}   ${job_name}
+    ...    ELSE    Verify A Job In Pipeline Detail Page With Log    ${job_no}    ${job_status}   ${stage}   ${job_name}
     :FOR    ${txt}    IN    @{text}
     \    Element Should Contain    css=div.io-reconquest-snake-pipeline-details__job-logs    ${txt}
 
 Verify A Job In Pipeline Detail Page With Regex
     [Documentation]    Verify a job in pipelien detail page
     [Arguments]    ${job_no}    ${job_status}   ${stage}   ${job_name}   @{text}
-    Verify A Job In Pipeline Detail Page Without Log    ${job_no}    ${job_status}   ${stage}   ${job_name}
+    Verify A Job In Pipeline Detail Page With Log    ${job_no}    ${job_status}   ${stage}   ${job_name}
     # verify log text
     ${log}    Get Text    css=div.io-reconquest-snake-pipeline-details__job-logs
     log    ${log}
@@ -198,8 +213,8 @@ Delete A Var In Setting
     Wait Until Element Is Visible    xpath=//span[text()="Remove Variable"]
     Click Element    xpath=//span[text()="Remove Variable"]
     # wait for confirm and click Yes
-    Wait Until Element Is Visible    xpath=//button[text()="No, cancel"]
-    Click Element    xpath=//button[text()="Yes"]
+    Wait Until Element Is Visible    xpath=//*[@aria-hidden="false"]//button[text()="No, cancel"]
+    Click Element    xpath=//*[@aria-hidden="false"]//button[text()="Yes"]
     # wait for no variable
     Wait Until Element Is Not Visible    xpath=//td/tt[text()="${name}"]
 
@@ -222,6 +237,54 @@ Add A Repo Variable
     Run Keyword And Ignore Error    Delete A Var In Setting    ${name}
     # add
     Add A Var In Setting    ${name}    ${value}
+
+Delete A Project Variable
+    [Arguments]    ${name}    ${value}
+    Go To    ${BASE_URL}/plugins/servlet/snake-ci/projects/${PROJ}/settings/env/
+    # wait for add button
+    Wait Until Element Is Visible    xpath=//button[text()="Add"]
+    # delete
+    Delete A Var In Setting    ${name}
+
+Delete A Repo Variable
+    [Arguments]    ${name}    ${value}
+    Go To    ${BASE_URL}/plugins/servlet/snake-ci/projects/${PROJ}/repos/${REPO}/settings/env/
+    # wait for add button
+    Wait Until Element Is Visible    xpath=//button[text()="Add"]
+    # delete
+    Delete A Var In Setting    ${name}
+
+Delete All Project Variable
+    Go To    ${BASE_URL}/plugins/servlet/snake-ci/projects/${PROJ}/settings/env/
+    # wait for add button
+    Wait Until Element Is Visible    xpath=//button[text()="Add"]
+    # get a list of var name
+    ${variables}    Get WebElements    xpath=//table//tbody/tr/td[1]/tt
+    @{names}    Create List
+    :FOR    ${var}    IN    @{variables}
+    \    ${name}    Get Text    ${var}
+    \    Append To List    ${names}    ${name}
+    # delete all
+    :FOR    ${name}    IN    @{names}
+    \    Delete A Var In Setting    ${name}
+
+Delete All Repo Variable
+    Go To    ${BASE_URL}/plugins/servlet/snake-ci/projects/${PROJ}/repos/${REPO}/settings/env/
+    # wait for add button
+    Wait Until Element Is Visible    xpath=//button[text()="Add"]
+    # get a list of var name
+    ${variables}    Get WebElements    xpath=//table//tbody/tr/td[1]/tt
+    @{names}    Create List
+    :FOR    ${var}    IN    @{variables}
+    \    ${name}    Get Text    ${var}
+    \    Append To List    ${names}    ${name}
+    # delete all
+    :FOR    ${name}    IN    @{names}
+    \    Delete A Var In Setting    ${name}
+
+Delete All Variables
+    Delete All Project Variable
+    Delete All Repo Variable
 
 Invoke A New Pipeline
     [Arguments]    ${branch}    ${name}    ${value}
