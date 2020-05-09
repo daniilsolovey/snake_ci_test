@@ -61,6 +61,29 @@ Copy File To Repo And Push 2
     ${url}    Get Pipeline Url    ${result.stderr}
     [Return]    ${url}
 
+Remove Yaml File And Push
+    [Arguments]    ${file}    ${msg_name}    ${repo_dir}=${REPO_DIR}
+    # checkout
+    ${result}    Run Process Wrapper    git    checkout    master    cwd=${repo_dir}
+    Should Be Equal As Integers	   ${result.rc}	   0
+    # git pull
+    ${result}    Run Process Wrapper    git    pull    cwd=${repo_dir}
+    Should Be Equal As Integers	   ${result.rc}	   0
+    # remove file
+    Remove File    ${file}
+    # modify a file incase of no change
+    ${result}    Run Process Wrapper    date >> test.txt    shell=yes    cwd=${repo_dir}
+    Should Be Equal As Integers	   ${result.rc}	   0
+    # push
+    ${result}    Run Process Wrapper    git    add    -A    cwd=${repo_dir}
+    Should Be Equal As Integers	   ${result.rc}	   0
+    ${result}    Run Process Wrapper    git    commit    -m    ${msg_name}    cwd=${repo_dir}
+    Should Be Equal As Integers	   ${result.rc}	   0
+    ${result}    Run Process Wrapper    git    push    origin    cwd=${repo_dir}
+    Should Be Equal As Integers    ${result.rc}    0
+    # should contain the pipeline url
+    Should Not Contain    ${result.stderr}    pipeline for master
+
 Copy File To Repo And Push On A Branch
     [Arguments]    ${branch}    ${sfile}    ${dfile}    ${msg_name}   ${repo_dir}=${REPO_DIR}
     # checkout

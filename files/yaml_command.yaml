@@ -1,7 +1,4 @@
 # verify command is require
-variables:
-  PIPELINE_WIDE: "available for all jobs"
-
 stages:
   - stage1
 
