@@ -270,4 +270,21 @@ Verify variable in image field - Image with repo and project variable
     Go To Job List Page And Verify A Job    2    Completed    ${COMMIT_MSG}    STAGE1    job 2    ${pipeline_num}
     Go To Job List Page And Verify A Job    3    Skipped    ${COMMIT_MSG}    STAGE2    job 3    ${pipeline_num}
 
+Verify hidden job
+    ## verify stage is require at pipeline level
+    Set Test Variable    ${COMMIT_MSG}    Verify hidden job
+    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/yaml_hidden_job.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
+    ${pipeline_num}    Go To Pipeline Detail Page    ${url}
+    Verify A Pipeline Detail Page    Failed    ${COMMIT_MSG}    Jobs (3 total):1 failed2 completed    ${pipeline_num}
+    # Verify jobs in pipeline detail page
+    Verify A Job In Pipeline Detail Page    1    Completed    BUILD    build for mac    echo "build for mac"\nbuild for mac
+    Verify A Job In Pipeline Detail Page    2    Completed    BUILD    build for linux    echo "build for linux"\nbuild for linux
+    Verify A Job In Pipeline Detail Page    3    Failed    BUILD    build for windows    unable to pull image ""
+    # verify pipeline in pipeline list page
+    Go To Pipeline List Page And Verify A Pipeline    1    Failed    ${COMMIT_MSG}    ${pipeline_num}
+    # verify jobs in the job list page
+    Go To Job List Page And Verify A Job    1    Completed    ${COMMIT_MSG}    BUILD    build for mac    ${pipeline_num}
+    Go To Job List Page And Verify A Job    2    Completed    ${COMMIT_MSG}    BUILD    build for linux    ${pipeline_num}
+    Go To Job List Page And Verify A Job    3    Failed    ${COMMIT_MSG}    BUILD    build for windows    ${pipeline_num}
+
 *** Keywords ***

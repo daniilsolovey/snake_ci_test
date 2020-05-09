@@ -83,4 +83,16 @@ Verify Builtin Environment Variables
     # verify jobs in the job list page
     Go To Job List Page And Verify A Job    1    Completed    ${COMMIT_MSG}    STAGE1    install dependencies    ${pipeline_num}
 
+Cancel a running pipeline
+    # cancel in pipeline detail page
+    # cancel in pipeline list
+
+Cancel a running pipeline from a pull request
+    # cancel in pipeline detail page
+    # cancel in pipeline list
+
+Cancel a running job
+    # cancel in pipeline detail page
+    # cancel in job list
+
 *** Keywords ***
