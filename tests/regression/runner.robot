@@ -4,6 +4,9 @@ Resource    ../commonWeb.robot
 Resource    ../commonGit.robot
 Resource    ../commonBitbucket.robot
 Resource    ../settings.robot
+Resource    ../pipelineDetailPage.robot
+Resource    ../pipelineListPage.robot
+Resource    ../jobListPage.robot
 
 Suite Setup    Common Suite Setup
 #Suite Teardown    Common Suite Teardown
@@ -84,15 +87,43 @@ Verify Builtin Environment Variables
     Go To Job List Page And Verify A Job    1    Completed    ${COMMIT_MSG}    STAGE1    install dependencies    ${pipeline_num}
 
 Cancel a running pipeline
-    # cancel in pipeline detail page
-    # cancel in pipeline list
+    ## cancel in pipeline detail page
+    ${commit_msg}    Set Variable    Verify canceling a running pipeline from pipeline detail page
+    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/runner_cancel_pipeline.yaml    ${SNAKE_YAML}    ${commit_msg}
+    ${pipeline_num}    Go To Pipeline Detail Page    ${url}
+    Cancel A Running Pipeline In Pipeline Detail Page
+    Verify A Pipeline Detail Page    Canceled    ${commit_msg}    Jobs (1 total):1 canceled    ${pipeline_num}
+    Verify A Job In Pipeline Detail Page    1    Canceled    STAGE1    job 1
+    ## cancel in pipeline list page
+    ${commit_msg}    Set Variable    Verify canceling a running pipeline from pipeline list page
+    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/runner_cancel_pipeline.yaml    ${SNAKE_YAML}    ${commit_msg}
+    ${pipeline_num}    Get Pipeline Number From Url    ${url}
+    Go To Pipeline List Page And Verify A Pipeline    1    Running    ${commit_msg}    ${pipeline_num.strip()}
+    Cancel A Running Pipeline In Pipeline List Page    1
+    Go To Pipeline List Page And Verify A Pipeline    1    Canceled    ${commit_msg}    ${pipeline_num.strip()}
 
 Cancel a running pipeline from a pull request
     # cancel in pipeline detail page
     # cancel in pipeline list
 
 Cancel a running job
-    # cancel in pipeline detail page
-    # cancel in job list
+    ## cancel in pipeline detail page
+    ${commit_msg}    Set Variable    Verify canceling a running job from pipeline detail page
+    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/runner_cancel_job.yaml    ${SNAKE_YAML}    ${commit_msg}
+    ${pipeline_num}    Go To Pipeline Detail Page    ${url}
+    Cancel A Running Job In Pipeline Detail Page    1
+    Verify A Pipeline Detail Page    Canceled    ${COMMIT_MSG}    Jobs (2 total):2 canceled    ${pipeline_num}
+    Verify A Job In Pipeline Detail Page    1    Canceled    STAGE1    job 1
+    Verify A Job In Pipeline Detail Page    2    Canceled    STAGE2    job 2
+    Go To Job List Page And Verify A Job    1    Canceled    ${commit_msg}    STAGE1    job 1    ${pipeline_num}
+    Go To Job List Page And Verify A Job    2    Canceled    ${commit_msg}    STAGE2    job 2    ${pipeline_num}
+    ## cancel in job list page
+    ${commit_msg}    Set Variable    Verify canceling a running job from job list page
+    ${url}    Copy File To Repo And Push    ${EXECDIR}/files/runner_cancel_job.yaml    ${SNAKE_YAML}    ${commit_msg}
+    ${pipeline_num}    Get Pipeline Number From Url    ${url}
+    Go To Job List Page And Verify A Job    1    Running    ${commit_msg}    STAGE1    job 1    ${pipeline_num.strip()}
+    Cancel A Running Job In Job List Page    1
+    Go To Job List Page And Verify A Job    1    Canceled    ${commit_msg}    STAGE1    job 1    ${pipeline_num.strip()}
+    Go To Job List Page And Verify A Job    2    Canceled    ${commit_msg}    STAGE2    job 2    ${pipeline_num.strip()}
 
 *** Keywords ***

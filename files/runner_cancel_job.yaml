@@ -1,0 +1,13 @@
+stages:
+  - stage1
+  - stage2
+
+job 1:
+  stage: stage1
+  commands:
+    - sleep 60s
+
+job 2:
+  stage: stage2
+  commands:
+    - sleep 60s

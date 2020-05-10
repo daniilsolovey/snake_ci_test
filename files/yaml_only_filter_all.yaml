@@ -1,0 +1,18 @@
+stages:
+    - build
+
+.build: &parent_build
+    stage: build
+    image: $image_var
+    only:
+        variables:
+            - $only_var
+    commands:
+        - echo "parent build"
+
+build for mac:
+    <<: *parent_build
+    variables:
+        image_var: golang
+    commands:
+        - echo "build for mac"

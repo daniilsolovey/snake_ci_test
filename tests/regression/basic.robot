@@ -4,6 +4,9 @@ Resource    ../commonWeb.robot
 Resource    ../commonGit.robot
 Resource    ../commonBitbucket.robot
 Resource    ../settings.robot
+Resource    ../pipelineDetailPage.robot
+Resource    ../pipelineListPage.robot
+Resource    ../jobListPage.robot
 
 Suite Setup    Common Suite Setup
 #Suite Teardown    Common Suite Teardown

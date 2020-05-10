@@ -4,6 +4,9 @@ Resource    ../commonWeb.robot
 Resource    ../commonGit.robot
 Resource    ../commonBitbucket.robot
 Resource    ../settings.robot
+Resource    ../pipelineDetailPage.robot
+Resource    ../pipelineListPage.robot
+Resource    ../jobListPage.robot
 
 Suite Setup    Common Suite Setup
 #Suite Teardown    Common Suite Teardown
@@ -286,5 +289,12 @@ Verify hidden job
     Go To Job List Page And Verify A Job    1    Completed    ${COMMIT_MSG}    BUILD    build for mac    ${pipeline_num}
     Go To Job List Page And Verify A Job    2    Completed    ${COMMIT_MSG}    BUILD    build for linux    ${pipeline_num}
     Go To Job List Page And Verify A Job    3    Failed    ${COMMIT_MSG}    BUILD    build for windows    ${pipeline_num}
+
+Verify all jobs are filtered by Only
+    ## push
+    Set Test Variable    ${COMMIT_MSG}    Verify all job filtered by only
+    Copy File To Repo And Push Without Pipeline    ${EXECDIR}/files/yaml_only_filter_all.yaml    ${SNAKE_YAML}    ${COMMIT_MSG}
+    ## trigger from new pipelie dialog
+    Invoke A New Pipeline And Verify Error    master    xxx    yyy    No jobs for the pipeline. The jobs were filtered out by only parameters.
 
 *** Keywords ***
